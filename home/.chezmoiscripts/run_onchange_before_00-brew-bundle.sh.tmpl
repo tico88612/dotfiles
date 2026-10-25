@@ -1,0 +1,15 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Brewfile: {{ include ".chezmoitemplates/Brewfile" | sha256sum }}
+
+if ! command -v brew >/dev/null 2>&1; then
+  printf '[chezmoi] Homebrew is missing; install it before applying macOS packages\n' >&2
+  exit 0
+fi
+
+readonly brewfile={{ joinPath .chezmoi.sourceDir "home" ".chezmoitemplates" "Brewfile" | quote }}
+brew bundle --file="$brewfile"
+{{ end -}}

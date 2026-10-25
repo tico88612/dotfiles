@@ -1,0 +1,32 @@
+.DS_Store
+*.bak
+*.log
+*.sock
+*.sock.*
+*.zwc
+.zcompdump*
+
+# Plaintext environment and credential files.
+**/.env
+**/.env.*
+!**/.env.example
+!**/*.env.tpl
+**/.aws/credentials
+
+# SSH runtime and private material.
+**/.ssh/known_hosts
+**/.ssh/known_hosts.old
+**/.ssh/*.pem
+**/.ssh/id_*
+!**/.ssh/*.pub
+home/private_dot_ssh/*
+!home/private_dot_ssh/private_config.tmpl
+!home/private_dot_ssh/*.pub
+
+# Terraform local state and cached backend configuration.
+**/.terraform/
+*.tfstate
+*.tfstate.*
+
+# Herdr build output.
+herdr-plugins/**/target/

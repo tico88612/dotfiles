@@ -40,8 +40,8 @@ dotfiles/
 │   ├── dot_config/
 │   │   ├── nvim/
 │   │   ├── herdr/
-│   │   └── 1Password/
-│   └── Library/                   # ignored outside Darwin
+│   │   └── private_1Password/     # target directory mode 0700
+│   └── private_Library/           # mode 0700; ignored outside Darwin
 ├── manifests/
 │   └── herdr-plugins.tsv
 └── herdr-plugins/
@@ -102,7 +102,10 @@ created on Linux.
 `.chezmoiexternal.toml` installs immutable archive revisions of Oh My Zsh,
 Powerlevel10k, and Zsh plugins. Archive URLs are pinned to commits, so a new
 machine receives the same code without storing third-party repositories in this
-Git history.
+Git history. Oh My Zsh and its declared plugins are exact trees, while
+locally-generated 1Password and UV completions are explicitly ignored and
+preserved. Runtime caches, generated completions, and compiled Zsh files are
+also ignored so they do not create permanent drift.
 
 ### Scripts
 

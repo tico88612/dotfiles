@@ -1,0 +1,17 @@
+id = "hproj"
+name = "Hproj"
+version = "0.1.0"
+min_herdr_version = "0.8.0"
+description = "Pick a Git project with fzf and open Codex, Neovim, and terminal tabs in a new Herdr workspace."
+platforms = ["macos", "linux"]
+
+[[actions]]
+id = "open"
+title = "Open project workspace"
+command = ["sh", "-c", "herdr plugin pane open --plugin hproj --entrypoint picker --placement popup --width 90% --height 80% --focus"]
+
+[[panes]]
+id = "picker"
+title = "Open project"
+command = ["sh", "-c", "exec /bin/zsh \"$HERDR_PLUGIN_ROOT/scripts/project-picker.zsh\""]
+placement = "popup"

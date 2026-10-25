@@ -1,0 +1,62 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! command -v herdr >/dev/null 2>&1 || ! command -v jq >/dev/null 2>&1; then
+  printf '[chezmoi] Herdr or jq is missing; skipping Herdr plugin setup\n' >&2
+  exit 0
+fi
+
+readonly repo_root={{ .chezmoi.sourceDir | quote }}
+readonly manifest="$repo_root/manifests/herdr-plugins.tsv"
+
+registry=''
+
+refresh_registry() {
+  registry="$(herdr plugin list --json)"
+}
+
+plugin_json() {
+  local plugin_id="$1"
+  printf '%s\n' "$registry" |
+    jq -c --arg id "$plugin_id" '.result.plugins[]? | select(.plugin_id == $id)' |
+    head -1
+}
+
+refresh_registry
+
+while IFS=$'\t' read -r kind plugin_id source revision enabled; do
+  [[ -n "$kind" && "$kind" != \#* ]] || continue
+
+  current="$(plugin_json "$plugin_id")"
+
+  if [[ -z "$current" ]]; then
+    if [[ "$kind" == github ]]; then
+      if [[ "$plugin_id" == herdr-agent-quota ]] && ! command -v cargo >/dev/null 2>&1; then
+        printf '[chezmoi] cargo is required to install %s; skipping\n' "$plugin_id" >&2
+        continue
+      fi
+      herdr plugin install "$source" --ref "$revision" --yes
+    else
+      herdr plugin link "$repo_root/$source"
+    fi
+    refresh_registry
+    current="$(plugin_json "$plugin_id")"
+  elif [[ "$kind" == local ]]; then
+    desired_manifest="$repo_root/$source/herdr-plugin.toml"
+    current_manifest="$(printf '%s\n' "$current" | jq -r '.manifest_path // ""')"
+    if [[ "$current_manifest" != "$desired_manifest" ]]; then
+      herdr plugin unlink "$plugin_id"
+      herdr plugin link "$repo_root/$source"
+      refresh_registry
+      current="$(plugin_json "$plugin_id")"
+    fi
+  fi
+
+  if [[ "$enabled" == true ]] &&
+    [[ "$(printf '%s\n' "$current" | jq -r '.enabled')" != true ]]; then
+    herdr plugin enable "$plugin_id"
+  fi
+done < "$manifest"
+{{ end -}}

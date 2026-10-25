@@ -1,0 +1,4 @@
+# kind	plugin-id	source-or-path	commit	enabled
+github	herdr-agent-quota	levi-qiao/herdr-agent-quota	5c2077882e09d81415d4160116c920dd459ab9ca	true
+github	herdr-theme-picker	qintmb/herdr-theme-picker	a703443ba265cc66c105806a6d39cc6e8e5fa2b4	true
+local	hproj	herdr-plugins/hproj	-	true

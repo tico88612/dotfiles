@@ -63,7 +63,7 @@ plugins and Powerlevel10k remain pinned by this repository.
 - LazyVim configuration with a locked plugin set.
 - Markdown image and Mermaid rendering through Snacks and Kitty graphics.
 - Herdr configuration and plugins on macOS.
-- A rewritable iTerm2 Dynamic Profile on macOS.
+- An opt-in rewritable iTerm2 Dynamic Profile on macOS.
 - Non-secret 1Password SSH Agent vault selection on macOS.
 
 Private SSH keys, runtime state, histories, logs, caches, sockets, and generated

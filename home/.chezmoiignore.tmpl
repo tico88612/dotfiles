@@ -1,6 +1,12 @@
-{{- if ne .chezmoi.os "darwin" }}
+{{- $enableIterm2 := get . "enableIterm2" | default false }}
+{{- if or (ne .chezmoi.os "darwin") (not $enableIterm2) }}
+Library/Application Support/iTerm2
 Library/Application Support/iTerm2/**
+{{- end }}
+{{- if ne .chezmoi.os "darwin" }}
+.config/herdr
 .config/herdr/**
+.config/1Password
 .config/1Password/**
 {{- end }}
 

@@ -27,7 +27,7 @@ dotfiles/
 ├── .chezmoiroot                   # source state is home/
 ├── home/
 │   ├── .chezmoi.toml.tmpl         # remembers the Git working tree as sourceDir
-│   ├── .chezmoiignore.tmpl        # Darwin/Linux selection
+│   ├── .chezmoiignore.tmpl        # platform and opt-in selection
 │   ├── .chezmoiexternal.toml      # Git-managed OMZ and pinned plugins
 │   ├── .chezmoiscripts/
 │   ├── .chezmoitemplates/
@@ -85,7 +85,7 @@ state. There is no additional wrapper or module orchestration layer.
 
 ### Darwin only
 
-- iTerm2 Dynamic Profile and default-profile selection.
+- Opt-in iTerm2 Dynamic Profile and default-profile selection.
 - Herdr configuration and plugin setup.
 - 1Password SSH Agent selection.
 - OrbStack, JetBrains Toolbox, and the macOS 1Password agent socket.
@@ -173,8 +173,11 @@ Not tracked:
 
 - The full preferences database, chat data, sockets, caches, or saved state.
 
-The target is ignored outside Darwin. UI edits can be intentionally captured
-with `chezmoi re-add`.
+The target is ignored outside Darwin and defaults to disabled on macOS. The
+iTerm2 cask is also intentionally absent from the base Brewfile. Install the
+application separately and enable the profile per machine with
+`data.enableIterm2 = true`. UI edits can then be intentionally captured with
+`chezmoi re-add`.
 
 ### Neovim
 

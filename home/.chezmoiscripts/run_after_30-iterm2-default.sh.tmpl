@@ -1,4 +1,5 @@
-{{ if eq .chezmoi.os "darwin" -}}
+{{- $enableIterm2 := get . "enableIterm2" | default false -}}
+{{ if and (eq .chezmoi.os "darwin") $enableIterm2 -}}
 #!/usr/bin/env bash
 
 set -euo pipefail

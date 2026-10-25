@@ -60,6 +60,7 @@ fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+export ZSH_CUSTOM="$HOME/.zsh-custom"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -119,9 +120,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -132,14 +130,12 @@ if [[ "$OSTYPE" == darwin* ]]; then
   plugins+=(brew)
 fi
 
-zsh_custom_dir="${ZSH_CUSTOM:-${ZSH:-$HOME/.oh-my-zsh}/custom}"
-if [[ -r "$zsh_custom_dir/plugins/uv/uv.plugin.zsh" ]]; then
+if [[ -r "$ZSH_CUSTOM/plugins/uv/uv.plugin.zsh" ]]; then
   plugins+=(uv)
 fi
-if [[ -d "$zsh_custom_dir/plugins/zsh-completions/src" ]]; then
-  fpath+=("$zsh_custom_dir/plugins/zsh-completions/src")
+if [[ -d "$ZSH_CUSTOM/plugins/zsh-completions/src" ]]; then
+  fpath+=("$ZSH_CUSTOM/plugins/zsh-completions/src")
 fi
-unset zsh_custom_dir
 
 if [[ -r "$ZSH/oh-my-zsh.sh" ]]; then
   source "$ZSH/oh-my-zsh.sh"

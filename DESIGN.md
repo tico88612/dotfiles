@@ -28,7 +28,7 @@ dotfiles/
 ├── home/
 │   ├── .chezmoi.toml.tmpl         # remembers the Git working tree as sourceDir
 │   ├── .chezmoiignore.tmpl        # Darwin/Linux selection
-│   ├── .chezmoiexternal.toml      # pinned Oh My Zsh ecosystem
+│   ├── .chezmoiexternal.toml      # Git-managed OMZ and pinned plugins
 │   ├── .chezmoiscripts/
 │   ├── .chezmoitemplates/
 │   │   └── Brewfile
@@ -79,7 +79,7 @@ state. There is no additional wrapper or module orchestration layer.
 ### Shared by macOS and Linux
 
 - Zsh startup files and Powerlevel10k configuration.
-- Pinned Oh My Zsh and third-party plugin archives.
+- Git-managed Oh My Zsh and pinned third-party plugin archives.
 - SSH host configuration and public identity selectors.
 - Neovim and LazyVim configuration.
 
@@ -99,13 +99,13 @@ created on Linux.
 
 ### Externals
 
-`.chezmoiexternal.toml` installs immutable archive revisions of Oh My Zsh,
-Powerlevel10k, and Zsh plugins. Archive URLs are pinned to commits, so a new
-machine receives the same code without storing third-party repositories in this
-Git history. Oh My Zsh and its declared plugins are exact trees, while
-locally-generated 1Password and UV completions are explicitly ignored and
-preserved. Runtime caches, generated completions, and compiled Zsh files are
-also ignored so they do not create permanent drift.
+`.chezmoiexternal.toml` keeps Oh My Zsh as a shallow Git repository so its
+native `omz update` command remains available. Its zero refresh period prevents
+a normal `chezmoi apply` from pulling it implicitly. `ZSH_CUSTOM` points to the
+separate `~/.zsh-custom` tree, where Powerlevel10k and third-party plugins are
+installed from immutable archives pinned to commits. Locally-generated
+1Password and UV completions, compiled Zsh files, and dynamic zsh-nvm
+completions are ignored so they do not create permanent drift.
 
 ### Scripts
 
@@ -128,7 +128,7 @@ rather than blocking portable configuration.
 Tracked:
 
 - Startup files and Powerlevel10k configuration.
-- Pinned external archive definitions.
+- The Oh My Zsh Git external and pinned plugin archive definitions.
 
 Not tracked:
 

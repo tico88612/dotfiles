@@ -4,7 +4,7 @@ set -euo pipefail
 
 command -v uv >/dev/null 2>&1 || exit 0
 
-destination="$HOME/.oh-my-zsh/custom/plugins/uv/uv.plugin.zsh"
+destination="$HOME/.zsh-custom/plugins/uv/uv.plugin.zsh"
 temporary="$(mktemp "${TMPDIR:-/tmp}/chezmoi-uv.XXXXXX")"
 trap 'rm -f "$temporary"' EXIT
 

@@ -52,9 +52,13 @@ git add .
 git commit
 ```
 
+Oh My Zsh remains a Git repository and is updated explicitly with
+`omz update`. A normal `chezmoi apply` does not pull it. Third-party Zsh
+plugins and Powerlevel10k remain pinned by this repository.
+
 ## Managed configuration
 
-- Zsh, Oh My Zsh, Powerlevel10k, and pinned plugins.
+- Zsh, Git-managed Oh My Zsh, Powerlevel10k, and pinned plugins.
 - SSH client configuration and public identity selectors.
 - LazyVim configuration with a locked plugin set.
 - Markdown image and Mermaid rendering through Snacks and Kitty graphics.

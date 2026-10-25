@@ -60,7 +60,13 @@ fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-export ZSH_CUSTOM="$HOME/.zsh-custom"
+if [[ -r "$HOME/.zsh-custom/themes/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
+  export ZSH_CUSTOM="$HOME/.zsh-custom"
+else
+  # Keep existing shells usable if the external plugin tree has not been
+  # installed yet or an interrupted apply left it incomplete.
+  export ZSH_CUSTOM="$ZSH/custom"
+fi
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,

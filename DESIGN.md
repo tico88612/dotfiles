@@ -65,7 +65,7 @@ chezmoi source state + OS templates + externals
 rendered destination files in $HOME
       |
       +--> run_after: uv completion, Herdr plugins, iTerm2 default
-      +--> run_onchange_after: LazyVim plugin synchronization
+      +--> run_onchange_after: LazyVim lockfile restoration
 
 live edit -> chezmoi re-add -> Git commit
 source edit -> chezmoi edit --apply -> Git commit
@@ -116,7 +116,7 @@ Scripts are deliberately small and idempotent:
 - UV completion refreshes after apply when `uv` exists.
 - Herdr plugin reconciliation runs after apply on Darwin.
 - iTerm2 default-profile selection runs after apply on Darwin.
-- LazyVim synchronization runs when `lazy-lock.json` changes.
+- LazyVim restoration runs when `lazy-lock.json` changes.
 
 Missing optional applications cause their setup script to skip with a warning
 rather than blocking portable configuration.

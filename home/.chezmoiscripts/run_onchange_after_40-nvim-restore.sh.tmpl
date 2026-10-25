@@ -5,8 +5,8 @@ set -euo pipefail
 # lazy-lock.json: {{ include "dot_config/nvim/lazy-lock.json" | sha256sum }}
 
 if ! command -v nvim >/dev/null 2>&1; then
-  printf '[chezmoi] Neovim is missing; skipping plugin synchronization\n' >&2
+  printf '[chezmoi] Neovim is missing; skipping plugin restoration\n' >&2
   exit 0
 fi
 
-nvim --headless '+Lazy! sync' '+qa'
+nvim --headless '+Lazy! restore' '+qa'

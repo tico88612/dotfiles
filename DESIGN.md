@@ -26,7 +26,7 @@
 dotfiles/
 ├── .chezmoiroot                   # source state is home/
 ├── home/
-│   ├── .chezmoi.toml.tmpl         # remembers this repository as sourceDir
+│   ├── .chezmoi.toml.tmpl         # remembers the Git working tree as sourceDir
 │   ├── .chezmoiignore.tmpl        # Darwin/Linux selection
 │   ├── .chezmoiexternal.toml      # pinned Oh My Zsh ecosystem
 │   ├── .chezmoiscripts/

@@ -8,7 +8,7 @@ if ! command -v herdr >/dev/null 2>&1 || ! command -v jq >/dev/null 2>&1; then
   exit 0
 fi
 
-readonly repo_root={{ .chezmoi.sourceDir | quote }}
+readonly repo_root={{ .chezmoi.workingTree | quote }}
 readonly manifest="$repo_root/manifests/herdr-plugins.tsv"
 
 registry=''

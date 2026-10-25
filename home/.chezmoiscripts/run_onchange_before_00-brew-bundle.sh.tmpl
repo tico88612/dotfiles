@@ -10,6 +10,6 @@ if ! command -v brew >/dev/null 2>&1; then
   exit 0
 fi
 
-readonly brewfile={{ joinPath .chezmoi.sourceDir "home" ".chezmoitemplates" "Brewfile" | quote }}
+readonly brewfile={{ joinPath .chezmoi.sourceDir ".chezmoitemplates" "Brewfile" | quote }}
 brew bundle --file="$brewfile"
 {{ end -}}

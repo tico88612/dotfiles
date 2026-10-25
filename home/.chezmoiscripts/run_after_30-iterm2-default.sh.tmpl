@@ -1,0 +1,12 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+readonly profile="$HOME/Library/Application Support/iTerm2/DynamicProfiles/dotfiles.json"
+[[ -r "$profile" ]] || exit 0
+
+guid="$(plutil -extract Profiles.0.Guid raw -o - "$profile")"
+defaults write com.googlecode.iterm2 'Default Bookmark Guid' -string "$guid"
+printf '[chezmoi] selected the Dotfiles iTerm2 profile; restart iTerm2 when convenient\n'
+{{ end -}}

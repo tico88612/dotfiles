@@ -21,7 +21,9 @@
 !**/.ssh/*.pub
 home/private_dot_ssh/*
 !home/private_dot_ssh/private_config.tmpl
-!home/private_dot_ssh/*.pub
+!home/private_dot_ssh/private_config.d/
+home/private_dot_ssh/private_config.d/*
+!home/private_dot_ssh/private_config.d/*.age
 
 # Terraform local state and cached backend configuration.
 **/.terraform/

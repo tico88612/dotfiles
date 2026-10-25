@@ -2,15 +2,15 @@
 
 ## Goals
 
-1. A new macOS or Linux machine can restore its configuration with
-   `chezmoi init --apply`.
+1. A new macOS or Linux machine can restore its selected configuration with
+   `chezmoi init` followed by `chezmoi apply`.
 2. Portable files are shared and platform differences are explicit templates.
 3. Configuration domains remain independent even though chezmoi applies them
    together.
 4. External repositories and setup actions use chezmoi-native externals and
    scripts.
-5. Secrets remain optional and can later use 1Password or age without changing
-   unrelated configuration.
+5. Sensitive configuration is isolated so adding another encrypted domain does
+   not couple it to unrelated configuration.
 
 ## Non-goals
 
@@ -36,7 +36,7 @@ dotfiles/
 │   ├── dot_zprofile.tmpl
 │   ├── dot_zshenv
 │   ├── dot_p10k.zsh
-│   ├── private_dot_ssh/
+│   ├── private_dot_ssh/            # opt-in base + encrypted host topology
 │   ├── dot_config/
 │   │   ├── nvim/
 │   │   ├── herdr/
@@ -64,7 +64,7 @@ chezmoi source state + OS templates + externals
       v
 rendered destination files in $HOME
       |
-      +--> run_after: uv completion, Herdr plugins, iTerm2 default
+      +--> run_after: UV completion, Herdr plugins, iTerm2 default
       +--> run_onchange_after: LazyVim lockfile restoration
 
 live edit -> chezmoi re-add -> Git commit
@@ -80,7 +80,9 @@ state. There is no additional wrapper or module orchestration layer.
 
 - Zsh startup files and Powerlevel10k configuration.
 - Git-managed Oh My Zsh and pinned third-party plugin archives.
-- SSH host configuration and public identity selectors.
+- Opt-in SSH base configuration.
+- Opt-in age-encrypted SSH host topology.
+- Host-to-key selection through locally generated 1Password SSH Bookmarks.
 - Neovim and LazyVim configuration.
 
 ### Darwin only
@@ -139,17 +141,27 @@ Not tracked:
 
 Tracked:
 
-- SSH client template.
-- Public identity files.
+- SSH client base template.
+- Age-encrypted private host topology.
 - Non-secret 1Password vault selection metadata.
 
 Not tracked:
 
-- Private keys, `known_hosts`, sockets, or generated agent state.
+- Private keys, 1Password-generated bookmark configuration and public identity
+  files, `known_hosts`, sockets, or generated agent state.
 
 The source attributes make `~/.ssh`, its config, and the 1Password agent
-configuration private. The 1Password socket and OrbStack include are emitted
-only on Darwin.
+configuration private. The base config includes `~/.ssh/config.d/hosts.conf`,
+whose source is encrypted with age. The age identity is restored separately
+from 1Password and never enters Git. It also includes the 1Password-managed
+`~/.ssh/1Password/config`, which maps bookmarked host aliases to locally
+generated public identity selectors. Those generated files never enter Git.
+The 1Password socket and OrbStack include are emitted only on Darwin.
+
+`data.enableSSH` is selected during `chezmoi init`. When false,
+`.chezmoiignore.tmpl` excludes the complete SSH target and the 1Password SSH
+Agent configuration. Opting out is non-destructive: existing destination files
+are left untouched.
 
 ### Herdr
 
@@ -204,11 +216,12 @@ Before the first apply:
 Live destination edits do not modify Git automatically. Use
 `chezmoi re-add <target>` to capture them.
 
-## Future secrets
+## Secrets
 
-Chezmoi can retrieve values from 1Password template functions or transparently
-manage age-encrypted source files. A future AWS module may use either mechanism
-without making Zsh, SSH, or Neovim depend on a secret provider.
+Chezmoi transparently decrypts the SSH host inventory with an age identity kept
+in 1Password. Future secret domains, such as AWS credentials, may independently
+use age-encrypted files or 1Password template functions without making Zsh,
+SSH, or Neovim depend on them.
 
 ## Decisions to revisit
 

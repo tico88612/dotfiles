@@ -1,4 +1,11 @@
+{{- $enableSSH := promptBoolOnce . "enableSSH" "Enable SSH configuration" -}}
 sourceDir = {{ .chezmoi.workingTree | quote }}
+encryption = "age"
+
+[age]
+identity = {{ joinPath .chezmoi.homeDir ".config" "chezmoi" "age-key.txt" | quote }}
+recipient = "age1jwadddncvd4sn8cq5gp05tr0yrkz5cafem9fsdnnwcapz4y9dexslt9vmy"
 
 [data]
 enableIterm2 = false
+enableSSH = {{ $enableSSH }}

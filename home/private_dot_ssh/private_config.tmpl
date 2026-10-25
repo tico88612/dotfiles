@@ -1,0 +1,7 @@
+Include ~/.ssh/1Password/config
+
+{{ if eq .chezmoi.os "darwin" -}}
+Include ~/.orbstack/ssh/config
+{{- end }}
+
+Include ~/.ssh/config.d/hosts.conf

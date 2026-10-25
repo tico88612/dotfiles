@@ -1,4 +1,11 @@
 {{- $enableIterm2 := get . "enableIterm2" | default false }}
+{{- $enableSSH := get . "enableSSH" | default false }}
+{{- if not $enableSSH }}
+.ssh
+.ssh/**
+.config/1Password/ssh
+.config/1Password/ssh/**
+{{- end }}
 {{- if or (ne .chezmoi.os "darwin") (not $enableIterm2) }}
 Library/Application Support/iTerm2
 Library/Application Support/iTerm2/**

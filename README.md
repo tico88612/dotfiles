@@ -7,22 +7,34 @@ chezmoi templates.
 
 ## New machine
 
-Install chezmoi, then initialize and apply this repository:
+Install chezmoi, initialize the repository, and choose whether this machine
+should manage SSH configuration:
 
 ```sh
 # macOS
-brew install chezmoi
+brew install chezmoi age
 
 # Ubuntu/Debian
-sudo apt-get install chezmoi
+sudo apt-get install chezmoi age
 
-chezmoi init --apply <repository-url>
+# Initialization prompts: Enable SSH configuration? [y/N]
+chezmoi init <repository-url>
+
+# Only when SSH management was enabled:
+# 1. Enable the 1Password SSH Agent and bookmarked-host config generation.
+# 2. Restore the age identity before apply.
+install -d -m 700 ~/.config/chezmoi
+(umask 077; op read 'op://<vault>/<item>/<field>' > ~/.config/chezmoi/age-key.txt)
+chmod 600 ~/.config/chezmoi/age-key.txt
+
+chezmoi apply
 ```
 
 For this existing local checkout:
 
 ```sh
-chezmoi init --source ~/.dotfiles --apply
+chezmoi init --source ~/.dotfiles
+chezmoi apply
 ```
 
 On macOS, the first apply runs the tracked Brewfile through `brew bundle`.
@@ -59,15 +71,21 @@ plugins and Powerlevel10k remain pinned by this repository.
 ## Managed configuration
 
 - Zsh, Git-managed Oh My Zsh, Powerlevel10k, and pinned plugins.
-- SSH client configuration and public identity selectors.
+- Opt-in SSH client configuration, with host topology encrypted using age and
+  host-to-key selection delegated to 1Password SSH Bookmarks.
 - LazyVim configuration with a locked plugin set.
 - Markdown image and Mermaid rendering through Snacks and Kitty graphics.
 - Herdr configuration and plugins on macOS.
 - An opt-in rewritable iTerm2 Dynamic Profile on macOS.
 - Non-secret 1Password SSH Agent vault selection on macOS.
 
-Private SSH keys, runtime state, histories, logs, caches, sockets, and generated
-credentials are not tracked.
+The age identity and SSH private keys remain in 1Password and are not tracked.
+The 1Password app locally generates its bookmark config and public identity
+selectors; neither enters Git. Runtime state, histories, logs, caches, sockets,
+and generated credentials are also excluded.
+
+SSH management is selected per machine with `data.enableSSH`. When disabled,
+chezmoi leaves any existing SSH files untouched; it does not remove them.
 
 See [DESIGN.md](DESIGN.md) for platform boundaries and future secret-management
 extensions.

@@ -1,4 +1,5 @@
 {{- $enableSSH := promptBoolOnce . "enableSSH" "Enable SSH configuration" -}}
+{{- $enableGitIdentity := promptBoolOnce . "enableGitIdentity" "Enable Git identity and commit signing" -}}
 sourceDir = {{ .chezmoi.workingTree | quote }}
 encryption = "age"
 
@@ -8,4 +9,5 @@ recipient = "age1jwadddncvd4sn8cq5gp05tr0yrkz5cafem9fsdnnwcapz4y9dexslt9vmy"
 
 [data]
 enableIterm2 = false
+enableGitIdentity = {{ $enableGitIdentity }}
 enableSSH = {{ $enableSSH }}

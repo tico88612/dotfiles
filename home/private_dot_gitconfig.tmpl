@@ -1,0 +1,8 @@
+[alias]
+	ci = commit -s
+[fetch]
+	prune = true
+{{ if .enableGitIdentity }}
+[include]
+	path = ~/.config/git/identity
+{{- end }}

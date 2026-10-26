@@ -36,8 +36,10 @@ dotfiles/
 │   ├── dot_zprofile.tmpl
 │   ├── dot_zshenv
 │   ├── dot_p10k.zsh
+│   ├── private_dot_gitconfig.tmpl  # portable Git behavior, target mode 0600
 │   ├── private_dot_ssh/            # opt-in base + encrypted host topology
 │   ├── dot_config/
+│   │   ├── git/                    # opt-in encrypted identity and signing
 │   │   ├── nvim/
 │   │   ├── herdr/
 │   │   └── private_1Password/     # target directory mode 0700
@@ -80,6 +82,7 @@ state. There is no additional wrapper or module orchestration layer.
 
 - Zsh startup files and Powerlevel10k configuration.
 - Git-managed Oh My Zsh and pinned third-party plugin archives.
+- Portable Git behavior and opt-in encrypted personal identity.
 - Opt-in SSH base configuration.
 - Opt-in age-encrypted SSH host topology.
 - Host-to-key selection through locally generated 1Password SSH Bookmarks.
@@ -124,6 +127,19 @@ Missing optional applications cause their setup script to skip with a warning
 rather than blocking portable configuration.
 
 ## Ownership boundaries
+
+### Git
+
+Tracked:
+
+- Portable aliases and fetch behavior in `~/.gitconfig`.
+- An age-encrypted personal identity and SSH commit-signing include.
+
+Personal name, email, signing key, and 1Password signer configuration are
+enabled per machine with `data.enableGitIdentity`. When disabled, the portable
+config remains active without including the encrypted identity. The macOS
+1Password signer path is emitted only on Darwin; other platforms may use the
+configured SSH agent through Git's native SSH signing support.
 
 ### Zsh
 
@@ -218,10 +234,10 @@ Live destination edits do not modify Git automatically. Use
 
 ## Secrets
 
-Chezmoi transparently decrypts the SSH host inventory with an age identity kept
-in 1Password. Future secret domains, such as AWS credentials, may independently
-use age-encrypted files or 1Password template functions without making Zsh,
-SSH, or Neovim depend on them.
+Chezmoi transparently decrypts the SSH host inventory and personal Git identity
+with an age identity kept in 1Password. Future secret domains, such as AWS
+credentials, may independently use age-encrypted files or 1Password template
+functions without making Zsh, SSH, or Neovim depend on them.
 
 ## Decisions to revisit
 

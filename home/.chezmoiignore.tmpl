@@ -1,5 +1,9 @@
 {{- $enableIterm2 := get . "enableIterm2" | default false }}
+{{- $enableGitIdentity := get . "enableGitIdentity" | default false }}
 {{- $enableSSH := get . "enableSSH" | default false }}
+{{- if not $enableGitIdentity }}
+.config/git/identity
+{{- end }}
 {{- if not $enableSSH }}
 .ssh
 .ssh/**
